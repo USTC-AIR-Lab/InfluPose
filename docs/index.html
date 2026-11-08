@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="InfluPose learns state-conditioned geometric influence from complete geometry to recover object pose and size from partial point clouds.">
+  <meta name="theme-color" content="#fafbf9">
+  <title>InfluPose · Geometric Influence for Object Pose Estimation</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="site-config.js" defer></script>
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="wordmark" href="#top"><span class="brand-mark" aria-hidden="true">i</span>InfluPose</a>
+      <div class="nav-links"><a href="#method">Method</a><a href="#results">Results</a><a href="#visuals">Visuals</a></div>
+    </nav>
+  </header>
+  <main id="main">
+    <section id="top" class="hero wrap">
+      <p class="eyebrow"><span class="status-dot"></span> Anonymous submission</p>
+      <h1>Influ<span>Pose</span></h1>
+      <h2 class="paper-title">Learning State-Conditioned Geometric Influence<br class="wide-only"> for Category-Level Object Pose Estimation</h2>
+      <p class="hero-description">Learn how local geometry affects the recovered state.<br class="wide-only"> Estimate pose and size from a single partial point cloud.</p>
+      <p class="authors">Anonymous Authors</p>
+      <div class="resource-buttons" aria-label="Project downloads">
+        <a class="button primary" data-resource="code" hidden aria-disabled="true"><span aria-hidden="true">⌘</span> Code</a>
+        <a class="button" data-resource="paper" hidden aria-disabled="true"><span aria-hidden="true">↗</span> Paper</a>
+        <a class="button" data-resource="weights" hidden aria-disabled="true"><span aria-hidden="true">↓</span> Weights</a>
+        <a class="button" data-resource="evaluation" hidden aria-disabled="true"><span aria-hidden="true">↓</span> Eval data</a>
+      </div>
+      <div class="hero-figure figure-panel">
+        <img src="assets/method.png" width="2400" height="771" alt="Complete geometry and a frozen estimator supply influence targets during training. Partial-cloud inference predicts fields and jointly recovers pose and size." fetchpriority="high">
+      </div>
+      <p class="figure-caption">Complete geometry teaches regional influence. Partial geometry is sufficient at inference.</p>
+    </section>
+
+    <section id="abstract" class="section wrap reading">
+      <p class="section-kicker">The idea</p>
+      <h2>Which regions change the estimate?</h2>
+      <p>Category-level pose estimation recovers the rotation, translation, and metric size of unseen objects from partial depth observations. The effect of a region on that recovered state depends on the surrounding geometry and the estimator, as well as local correspondence quality.</p>
+      <p><strong>InfluPose learns state-conditioned geometric influence.</strong> During training, a frozen complete-cloud estimator processes intact geometry and clouds formed by regional deletion and refill. The resulting state changes, combined with a dense geometric proxy, supervise influence predictions from partial observations. Correspondences, reliability, influence, and initial size then enter a deterministic geometric solver.</p>
+      <p>Complete geometry and regional probes are used only during training. At inference, the partial-cloud network recovers a single pose and metric box.</p>
+    </section>
+
+    <section id="method" class="section tinted">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="section-kicker">Method</p><h2>Training and inference</h2></div><p>A frozen complete-cloud estimator supplies training targets for the partial-cloud predictor.</p></div>
+        <figure class="figure-panel method-detail"><a href="assets/paper-method.svg" target="_blank" rel="noopener noreferrer"><img src="assets/paper-method.svg" width="3200" height="888" loading="lazy" alt="InfluPose method: complete-cloud regional interventions supervise influence predictions for partial-cloud pose and size recovery."></a><figcaption>Regional interventions on complete geometry provide influence targets for partial-cloud training. Predicted influence enters joint pose-and-size recovery and receives endpoint gradients. Click the figure to view it at full resolution.</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="results" class="section wrap">
+      <div class="section-heading"><div><p class="section-kicker">Quantitative results</p><h2>Pose and size on REAL275</h2></div><p>Paper-reported mAP (%). Higher is better.<br>Stage 2 uses 15,576 detector inputs.</p></div>
+      <div class="result-highlight"><div><span class="large-metric">57.73<span>%</span></span><p>5° / 2 cm · Stage 2</p></div><p>Pose and metric size from partial point clouds.<br>Checkpoints can be used with the evaluation and inference scripts.</p></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="REAL275 accuracy results">
+        <table><thead><tr><th scope="col">Setting</th><th scope="col">5° / 2 cm</th><th scope="col">5° / 5 cm</th><th scope="col">10° / 2 cm</th><th scope="col">10° / 5 cm</th><th scope="col">IoU50</th><th scope="col">IoU75</th></tr></thead><tbody>
+          <tr class="main-result"><th scope="row">InfluPose (Full)</th><td>57.73</td><td>62.69</td><td>75.27</td><td>81.56</td><td>82.13</td><td>76.58</td></tr>
+        </tbody></table>
+      </div>
+      <p class="protocol-note">REAL275 results reported in the paper. Inference uses one partial-cloud predictor pass, weighted Kabsch initialization, and one robust-refinement update.</p>
+    </section>
+
+    <section id="visuals" class="section tinted">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="section-kicker">Qualitative results</p><h2>Recovering objects in real scenes</h2></div><p>Archived REAL275 visualizations from the project experiments.</p></div>
+        <figure class="figure-panel comparison"><a href="assets/comparison.webp" target="_blank" rel="noopener noreferrer"><img src="assets/comparison.webp" width="2400" height="1097" loading="lazy" alt="Archived category-level pose estimation comparisons on REAL275; boxes and method labels are shown in the figure"></a><figcaption>Pose and metric box comparisons. Open the figure to inspect the full resolution.</figcaption></figure>
+        <details class="architecture"><summary>More scenes <span aria-hidden="true">+</span></summary><figure class="scene-gallery"><a href="assets/qualitative.webp" target="_blank" rel="noopener noreferrer"><img src="assets/qualitative.webp" width="1298" height="1800" loading="lazy" alt="Additional InfluPose predictions across real-world object categories and scenes"></a><figcaption>Additional archived REAL275 examples.</figcaption></figure></details>
+      </div>
+    </section>
+
+  </main>
+  <footer class="wrap footer"><a class="wordmark" href="#top">InfluPose</a><p>Anonymous research project</p></footer>
+</body>
+</html>

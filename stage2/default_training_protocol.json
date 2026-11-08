@@ -1,0 +1,54 @@
+{
+  "format": "STAGE2_BASE30_REFINE20_V6",
+  "entrypoint": "bash scripts/train_stage2.sh",
+  "epochs": 50,
+  "initialization": "random",
+  "seed": 260907,
+  "gpu_count": 6,
+  "per_gpu_batch": 6,
+  "global_batch": 36,
+  "base": {
+    "epochs": [
+      1,
+      30
+    ],
+    "learning_rate": 0.0003,
+    "head_learning_rate": 0.0007,
+    "eta_min": 3e-05,
+    "camera_real_ratio": 1.0
+  },
+  "refinement": {
+    "epochs": [
+      31,
+      50
+    ],
+    "learning_rate": 1.5e-05,
+    "head_learning_rate": 3e-05,
+    "eta_min": 3e-07,
+    "camera_real_ratio": 0.75,
+    "source": "same-run epoch-30 EMA",
+    "reference": "frozen same-run epoch-30 EMA",
+    "fresh_optimizer_scheduler_ema": true
+  },
+  "auxiliary_losses": {
+    "active_epochs": [
+      31,
+      50
+    ],
+    "view_consistency_weight": 0.5,
+    "reference_pose_weight": 2.0,
+    "reference_iou_weight": 2.0,
+    "rotation_margin_degrees": 0.25,
+    "translation_margin_cm": 0.1,
+    "iou_margin": 0.01
+  },
+  "training_objective": {
+    "pose": "continuous_symmetry_aware_pose_and_size",
+    "iou": "mean_iou_proxy"
+  },
+  "output": "final.pth",
+  "evaluation_weights": "ema",
+  "checkpoint_selection": "fixed epoch 50",
+  "training_solver_updates": 3,
+  "evaluation_solver_updates": 1
+}

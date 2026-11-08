@@ -1,0 +1,8 @@
+name: influpose
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.20
+  - pip=24.3.1
+  - pip:
+      - -r requirements.txt

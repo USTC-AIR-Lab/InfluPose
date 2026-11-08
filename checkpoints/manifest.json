@@ -1,0 +1,33 @@
+{
+  "format": "INFLUPOSE_WEIGHT_MANIFEST_V1",
+  "files": [
+    {
+      "file": "checkpoints/stage1.pth",
+      "sha256": "f5c70c6e51311490573a7c85de9cdebfd16d6ddd3a543a67906f853e273cee16",
+      "bytes": 82319165,
+      "weights": "ema",
+      "resumable": false,
+      "tensor_count": 251,
+      "tensor_values_verified": true,
+      "role": "NOCS frozen complete-cloud teacher"
+    },
+    {
+      "file": "checkpoints/stage2.pth",
+      "sha256": "794a2df01539a69582be699c6e4c802a7bf8e49001d1fa678e9d01653eb3e4b4",
+      "bytes": 8098082,
+      "weights": "ema",
+      "resumable": false,
+      "tensor_count": 90,
+      "tensor_values_verified": true,
+      "role": "NOCS Full partial-cloud predictor",
+      "epoch": 50,
+      "epoch_index_base": 1
+    },
+    {
+      "file": "checkpoints/stage1_observability_audit.json",
+      "role": "Teacher observability audit",
+      "bytes": 1313,
+      "sha256": "04f5bc3d69634cb44f6c2841a232fdbdb8cbafa06e2a5aebee6471a46590f33c"
+    }
+  ]
+}
